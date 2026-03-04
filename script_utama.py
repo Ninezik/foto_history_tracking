@@ -50,6 +50,7 @@ query_mssql="""SELECT DISTINCT connote_code FROM connote_pod_new"""
 df_mssql=pd.read_sql(query_mssql, engine)
 
 # %%
+# df_mssql_set=set(('P2601270156382'))
 df_mssql_set = set(df_mssql['connote_code'].unique())
 
 # %%
@@ -103,6 +104,8 @@ for item in all_data:
 
     connote_code = item.get("connote_code")
     signature=item.get('pod').get('signature')
+    customer_code=item.get('connote_customfield').get('idKorporatConnote')
+
 
     for history in item.get("connote_history", []):
         if history.get("photo"):   # hanya yang ada photo
@@ -110,6 +113,7 @@ for item in all_data:
             rows.append({
                 "connote_code": connote_code,
                 'created_at': history.get("created_at"),
+                'customer_code': customer_code,
                 "state": history.get("state"),
                 "photo": history.get("photo"),
                 'signature': signature
